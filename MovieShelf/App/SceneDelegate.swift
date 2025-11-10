@@ -18,6 +18,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = scene as? UIWindowScene else { return }
         let window = UIWindow(windowScene: windowScene)
         
+        guard let container = Dependencies(app: UIApplication.shared) else { return }
+        let root = SearchViewController.make(deps: container.deps)
+        
+        window.rootViewController = UINavigationController(rootViewController: root)
         self.window = window
         window.makeKeyAndVisible()
     }
