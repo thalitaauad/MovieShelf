@@ -9,13 +9,22 @@ import Foundation
 
 private struct SearchResponseDTO: Decodable { let results: [MovieDTO] }
 private struct MovieDTO: Decodable {
-    let id: Int; let original_title: String; let poster_path: String?; let vote_average: Double
+    let id: Int
+    let original_title: String
+    let poster_path: String?
+    let vote_average: Double
 }
 private struct MovieDetailsDTO: Decodable {
-    let id: Int; let original_title: String; let title: String
-    let poster_path: String?; let backdrop_path: String?
-    let overview: String?; let release_date: String?
-    let budget: Int?; let revenue: Int?; let vote_average: Double
+    let id: Int
+    let original_title: String
+    let title: String
+    let poster_path: String?
+    let backdrop_path: String?
+    let overview: String?
+    let release_date: String?
+    let budget: Int?
+    let revenue: Int?
+    let vote_average: Double
 }
 
 final class TMDbAPIClient: MoviesAPI {
@@ -24,7 +33,8 @@ final class TMDbAPIClient: MoviesAPI {
     private let base: URL
 
     init(http: HTTPClient, apiKey: String) {
-        self.http = http; self.apiKey = apiKey
+        self.http = http
+        self.apiKey = apiKey
         guard let url = URL(string: "https://api.themoviedb.org/3") else {
             preconditionFailure("Invalid TMDB base URL")
         }
@@ -43,7 +53,8 @@ final class TMDbAPIClient: MoviesAPI {
         guard let url = makeURL("search/movie",
                                         query: [URLQueryItem(name: "query", value: query),
                                                 URLQueryItem(name: "page", value: String(page))]) else {
-            completion(.failure(URLError(.badURL))); return
+            completion(.failure(URLError(.badURL)))
+            return
         }
         http.get(url: url) { result in
             switch result {

@@ -22,7 +22,8 @@ final class MovieListInteractorTests: XCTestCase {
         api.searchStub = .success([Movie(id: 1, originalTitle: "A", posterPath: nil, voteAverage: 7.0)])
         let favs = FavoritesMock()
         let sut = MovieListInteractor(api: api, favs: favs, initialQuery: "star")
-        let out = OutputSpy(); sut.output = out
+        let out = OutputSpy()
+        sut.output = out
 
         sut.start()
 
@@ -37,7 +38,8 @@ final class MovieListInteractorTests: XCTestCase {
         api.searchStub = .failure(NSError(domain: "x", code: -1))
         let favs = FavoritesMock()
         let sut = MovieListInteractor(api: api, favs: favs, initialQuery: "q")
-        let out = OutputSpy(); sut.output = out
+        let out = OutputSpy()
+        sut.output = out
 
         sut.start()
 

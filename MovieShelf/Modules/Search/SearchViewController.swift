@@ -26,27 +26,28 @@ final class SearchViewController: UIViewController, SearchViewInput {
         let label = UILabel()
         label.text = "Search movies"
         label.font = .preferredFont(forTextStyle: .largeTitle)
-        label.translatesAutoresizingMaskIntoConstraints = false; return label
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     private let textField: UITextField = {
-        let tf = UITextField()
-        tf.placeholder = "Type a movie title…"
-        tf.borderStyle = .roundedRect
-        tf.returnKeyType = .search
-        tf.autocorrectionType = .no
-        tf.autocapitalizationType = .none
-        tf.translatesAutoresizingMaskIntoConstraints = false
-        return tf
+        let textField = UITextField()
+        textField.placeholder = "Type a movie title…"
+        textField.borderStyle = .roundedRect
+        textField.returnKeyType = .search
+        textField.autocorrectionType = .no
+        textField.autocapitalizationType = .none
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        return textField
     }()
     
     private let searchButton: UIButton = {
         var config = UIButton.Configuration.filled()
         config.title = "Search"
-        let b = UIButton(configuration: config)
-        b.isEnabled = false
-        b.translatesAutoresizingMaskIntoConstraints = false
-        return b
+        let button = UIButton(configuration: config)
+        button.isEnabled = false
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
     
     private let errorLabel: UILabel = {
@@ -61,23 +62,27 @@ final class SearchViewController: UIViewController, SearchViewInput {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground; title = "MovieShelf"
-        setupLayout(); setupActions()
+        view.backgroundColor = .systemBackground
+        title = "MovieShelf"
+        setupLayout()
+        setupActions()
         presenter?.viewDidLoad()
     }
 
     private func setupLayout() {
-        view.addSubview(titleLabel); view.addSubview(textField)
-        view.addSubview(errorLabel); view.addSubview(searchButton)
-        let g = view.safeAreaLayoutGuide
+        view.addSubview(titleLabel)
+        view.addSubview(textField)
+        view.addSubview(errorLabel)
+        view.addSubview(searchButton)
+        let guide = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: g.topAnchor, constant: 24),
-            titleLabel.leadingAnchor.constraint(equalTo: g.leadingAnchor, constant: 20),
-            titleLabel.trailingAnchor.constraint(equalTo: g.trailingAnchor, constant: -20),
+            titleLabel.topAnchor.constraint(equalTo: guide.topAnchor, constant: 24),
+            titleLabel.leadingAnchor.constraint(equalTo: guide.leadingAnchor, constant: 20),
+            titleLabel.trailingAnchor.constraint(equalTo: guide.trailingAnchor, constant: -20),
 
             textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
-            textField.leadingAnchor.constraint(equalTo: g.leadingAnchor, constant: 20),
-            textField.trailingAnchor.constraint(equalTo: g.trailingAnchor, constant: -20),
+            textField.leadingAnchor.constraint(equalTo: guide.leadingAnchor, constant: 20),
+            textField.trailingAnchor.constraint(equalTo: guide.trailingAnchor, constant: -20),
             textField.heightAnchor.constraint(equalToConstant: 44),
 
             errorLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 6),
@@ -97,8 +102,14 @@ final class SearchViewController: UIViewController, SearchViewInput {
         searchButton.addTarget(self, action: #selector(onSearch), for: .touchUpInside)
     }
     
-    @objc private func onChange() { presenter?.didChangeQuery(textField.text ?? "") }
-    @objc private func onSearch() { view.endEditing(true); presenter?.didTapSearch() }
+    @objc private func onChange() {
+        presenter?.didChangeQuery(textField.text ?? "")
+    }
+    
+    @objc private func onSearch() {
+        view.endEditing(true)
+        presenter?.didTapSearch()
+    }
 
     //MARK: - ViewInput
     func setButtonEnabled(_ enabled: Bool) {
@@ -113,5 +124,8 @@ final class SearchViewController: UIViewController, SearchViewInput {
 }
 
 extension SearchViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool { presenter?.didPressReturn(); return true }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        presenter?.didPressReturn()
+        return true
+    }
 }

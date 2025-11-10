@@ -60,7 +60,10 @@ final class FavoritesMock: FavoritesStoring {
 // MARK: - Image loader mock
 final class ImageLoaderMock: ImageLoading {
     var lastURL: URL?
-    func load(url: URL, completion: @escaping (UIImage?) -> Void) { lastURL = url; completion(UIImage()) }
+    func load(url: URL, completion: @escaping (UIImage?) -> Void) {
+        lastURL = url
+        completion(UIImage())
+    }
 }
 
 // MARK: - Spies de View e Router

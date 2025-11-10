@@ -22,17 +22,17 @@ final class FavoriteMovie {
     var voteAverage: Double
     var createdAt: Date = Date()
 
-    init(from d: MovieDetails) {
-        id = d.id
-        originalTitle = d.originalTitle
-        title = d.title
-        posterPath = d.posterPath
-        backdropPath = d.backdropPath
-        overview = d.overview
-        releaseDate = d.releaseDate
-        budget = d.budget
-        revenue = d.revenue
-        voteAverage = d.voteAverage
+    init(from details: MovieDetails) {
+        id = details.id
+        originalTitle = details.originalTitle
+        title = details.title
+        posterPath = details.posterPath
+        backdropPath = details.backdropPath
+        overview = details.overview
+        releaseDate = details.releaseDate
+        budget = details.budget
+        revenue = details.revenue
+        voteAverage = details.voteAverage
     }
 
     var asDomain: MovieDetails {

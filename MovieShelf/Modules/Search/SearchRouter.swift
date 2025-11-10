@@ -15,7 +15,7 @@ final class SearchRouter: SearchRouterProtocol {
     func routeToResults(query: String) {
         viewController?.view.endEditing(true)
 
-        let vc = MovieListViewController.make(initialQuery: query, deps: deps)
-        viewController?.navigationController?.pushViewController(vc, animated: true)
+        let view = MovieListViewController.make(initialQuery: query, deps: deps)
+        viewController?.navigationController?.pushViewController(view, animated: true)
     }
 }

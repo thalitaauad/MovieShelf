@@ -22,7 +22,9 @@ final class FavoritesListPresenter: FavoritesListViewOutput, FavoritesListIntera
     init(view: FavoritesListViewInput,
          interactor: FavoritesListInteractorInput,
          router: FavoritesListRouterProtocol) {
-        self.view = view; self.interactor = interactor; self.router = router
+        self.view = view
+        self.interactor = interactor
+        self.router = router
     }
 
     func viewDidLoad() { interactor.load() }

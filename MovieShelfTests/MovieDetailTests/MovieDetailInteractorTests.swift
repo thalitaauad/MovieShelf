@@ -29,7 +29,8 @@ final class MovieDetailInteractorTests: XCTestCase {
 
         let favs = FavoritesMock()
         let sut = MovieDetailInteractor(api: api, favs: favs, movieID: 10)
-        let out = OutputSpy(); sut.output = out
+        let out = OutputSpy()
+        sut.output = out
 
         sut.loadDetails()
 
@@ -47,7 +48,8 @@ final class MovieDetailInteractorTests: XCTestCase {
 
         let favs = FavoritesMock()
         let sut = MovieDetailInteractor(api: api, favs: favs, movieID: 1)
-        let out = OutputSpy(); sut.output = out
+        let out = OutputSpy()
+        sut.output = out
 
         sut.loadDetails()
 

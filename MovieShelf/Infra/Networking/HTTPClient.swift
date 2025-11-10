@@ -20,7 +20,10 @@ final class HTTPClient {
 
         session.dataTask(with: request) { data, response, error in
             DispatchQueue.main.async {
-                if let error = error { completion(.failure(error)); return }
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
                 guard let http = response as? HTTPURLResponse,
                       (200...299).contains(http.statusCode) else {
                     completion(.failure(NSError(domain: "http",

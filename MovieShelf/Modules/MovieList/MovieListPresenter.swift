@@ -22,7 +22,9 @@ final class MovieListPresenter: MovieListViewOutput, MovieListInteractorOutput {
     private let imageBase = "https://image.tmdb.org/t/p/w500"
 
     init(view: MovieListViewInput, interactor: MovieListInteractorInput, router: MovieListRouterProtocol) {
-        self.view = view; self.interactor = interactor; self.router = router
+        self.view = view
+        self.interactor = interactor
+        self.router = router
     }
 
     func viewDidLoad() {
@@ -47,7 +49,8 @@ final class MovieListPresenter: MovieListViewOutput, MovieListInteractorOutput {
     }
 
     func didFail(_ error: Error) {
-        view?.showLoading(false); view?.showError("Couldn’t load. Try again.")
+        view?.showLoading(false)
+        view?.showError("Couldn’t load. Try again.")
     }
     
     func didToggleFavorite(id: Int) {

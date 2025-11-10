@@ -34,22 +34,26 @@ final class MovieDetailViewController: UIViewController, MovieDetailViewInput {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground; title = "Details"
+        view.backgroundColor = .systemBackground
+        title = "Details"
         setupUI()
         presenter?.viewDidLoad()
     }
 
     private func setupUI() {
-        backdrop.contentMode = .scaleAspectFill; backdrop.clipsToBounds = true
+        backdrop.contentMode = .scaleAspectFill
+        backdrop.clipsToBounds = true
         titleLabel.font = .boldSystemFont(ofSize: 22)
         subtitle.textColor = .secondaryLabel
-        overview.numberOfLines = 0; info.numberOfLines = 0
+        overview.numberOfLines = 0
+        info.numberOfLines = 0
         saveButton.setTitle("Save locally", for: .normal)
         saveButton.addTarget(self, action: #selector(onSave), for: .touchUpInside)
 
         scroll.translatesAutoresizingMaskIntoConstraints = false
         [backdrop, titleLabel, subtitle, overview, info, saveButton, spinner].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
-        view.addSubview(scroll); view.addSubview(spinner)
+        view.addSubview(scroll)
+        view.addSubview(spinner)
         [backdrop, titleLabel, subtitle, overview, info, saveButton].forEach { scroll.addSubview($0) }
 
         let guide = view.safeAreaLayoutGuide
@@ -133,6 +137,7 @@ final class MovieDetailViewController: UIViewController, MovieDetailViewInput {
     
     func showError(_ message: String) {
         let a = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        a.addAction(UIAlertAction(title: "OK", style: .default)); present(a, animated: true)
+        a.addAction(UIAlertAction(title: "OK", style: .default))
+        present(a, animated: true)
     }
 }

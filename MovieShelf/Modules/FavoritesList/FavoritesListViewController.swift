@@ -12,33 +12,38 @@ final class FavoritesListViewController: UIViewController, FavoritesListViewInpu
     private var items: [FavoriteCellVM] = []
 
     static func make(deps: Deps) -> UIViewController {
-        let vc = FavoritesListViewController()
+        let viewController = FavoritesListViewController()
         let interactor = FavoritesListInteractor(favs: deps.favs)
-        let router = FavoritesListRouter(deps: deps); router.viewController = vc
-        let presenter = FavoritesListPresenter(view: vc, interactor: interactor, router: router)
-        vc.presenter = presenter; interactor.output = presenter
-        return vc
+        let router = FavoritesListRouter(deps: deps)
+        router.viewController = viewController
+        let presenter = FavoritesListPresenter(view: viewController, interactor: interactor, router: router)
+        viewController.presenter = presenter
+        interactor.output = presenter
+        return viewController
     }
 
-    // UI
+    // MARK: - UI
     private let table = UITableView()
     private let emptyLabel: UILabel = {
-        let l = UILabel()
-        l.text = "No favorites yet"
-        l.textAlignment = .center
-        l.textColor = .secondaryLabel
-        l.translatesAutoresizingMaskIntoConstraints = false
-        return l
+        let label = UILabel()
+        label.text = "No favorites yet"
+        label.textAlignment = .center
+        label.textColor = .secondaryLabel
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Favorites"; view.backgroundColor = .systemBackground
-        table.dataSource = self; table.delegate = self
+        title = "Favorites"
+        view.backgroundColor = .systemBackground
+        table.dataSource = self
+        table.delegate = self
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         table.translatesAutoresizingMaskIntoConstraints = false
 
-        view.addSubview(table); view.addSubview(emptyLabel)
+        view.addSubview(table)
+        view.addSubview(emptyLabel)
         NSLayoutConstraint.activate([
             table.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             table.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -57,23 +62,29 @@ final class FavoritesListViewController: UIViewController, FavoritesListViewInpu
         presenter?.viewWillAppear()
     }
 
-    // MARK: ViewInput
-    func show(items: [FavoriteCellVM]) { self.items = items; table.reloadData() }
-    func showEmpty(_ on: Bool) { emptyLabel.isHidden = !on; table.isHidden = on }
+    // MARK: - ViewInput
+    func show(items: [FavoriteCellVM]) {
+        self.items = items
+        table.reloadData()
+    }
+    func showEmpty(_ on: Bool) {
+        emptyLabel.isHidden = !on
+        table.isHidden = on
+    }
 }
 
 extension FavoritesListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tv: UITableView, numberOfRowsInSection section: Int) -> Int { items.count }
 
     func tableView(_ tv: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let vm = items[indexPath.row]
-        let c = tv.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        var conf = c.defaultContentConfiguration()
-        conf.text = vm.title
-        conf.secondaryText = vm.rating
-        c.contentConfiguration = conf
-        c.accessoryType = .disclosureIndicator
-        return c
+        let viewModel = items[indexPath.row]
+        let cell = tv.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        var config = cell.defaultContentConfiguration()
+        config.text = viewModel.title
+        config.secondaryText = viewModel.rating
+        cell.contentConfiguration = config
+        cell.accessoryType = .disclosureIndicator
+        return cell
     }
 
     func tableView(_ tv: UITableView, didSelectRowAt indexPath: IndexPath) {

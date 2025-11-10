@@ -24,7 +24,8 @@ final class MovieListViewController: UIViewController, MovieListViewInput {
     static func make(initialQuery: String, deps: Deps) -> UIViewController {
         let vc = MovieListViewController(deps: deps)
         let interactor = MovieListInteractor(api: deps.api, favs: deps.favs, initialQuery: initialQuery)
-        let router = MovieListRouter(deps: deps); router.viewController = vc
+        let router = MovieListRouter(deps: deps)
+        router.viewController = vc
         let presenter = MovieListPresenter(view: vc, interactor: interactor, router: router)
         vc.presenter = presenter
         interactor.output = presenter
@@ -93,9 +94,9 @@ final class MovieListViewController: UIViewController, MovieListViewInput {
     }
 
     func showError(_ message: String) {
-        let a = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        a.addAction(UIAlertAction(title: "OK", style: .default))
-        present(a, animated: true)
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
 }
 

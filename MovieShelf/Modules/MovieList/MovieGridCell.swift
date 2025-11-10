@@ -21,10 +21,12 @@ final class MovieGridCell: UICollectionViewCell {
         contentView.layer.cornerRadius = 10
         contentView.layer.masksToBounds = true
 
-        poster.contentMode = .scaleAspectFill; poster.clipsToBounds = true
+        poster.contentMode = .scaleAspectFill
+        poster.clipsToBounds = true
         title.font = .systemFont(ofSize: 14, weight: .semibold)
         title.numberOfLines = 2
-        rating.font = .systemFont(ofSize: 12); rating.textColor = .secondaryLabel
+        rating.font = .systemFont(ofSize: 12)
+        rating.textColor = .secondaryLabel
         heart.tintColor = .systemPink
 
         [poster, title, rating, heart].forEach {

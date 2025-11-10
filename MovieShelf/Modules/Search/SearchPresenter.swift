@@ -15,11 +15,14 @@ final class SearchPresenter: SearchViewOutput {
     private var pendingWork: DispatchWorkItem?
 
     init(view: SearchViewInput, interactor: SearchInteractorInput, router: SearchRouterProtocol) {
-        self.view = view; self.interactor = interactor; self.router = router
+        self.view = view
+        self.interactor = interactor
+        self.router = router
     }
 
     func viewDidLoad() {
-        view?.setButtonEnabled(false); view?.showError(nil)
+        view?.setButtonEnabled(false)
+        view?.showError(nil)
     }
 
     func didChangeQuery(_ text: String) {
@@ -29,9 +32,9 @@ final class SearchPresenter: SearchViewOutput {
         view?.showError(query.isEmpty || valid ? nil : "Type at least 2 characters")
 
         pendingWork?.cancel()
-        let w = DispatchWorkItem { [weak self] in _ = self?.query }
-        pendingWork = w
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35, execute: w)
+        let workItem = DispatchWorkItem { [weak self] in _ = self?.query }
+        pendingWork = workItem
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35, execute: workItem)
     }
 
     func didTapSearch() { go() }

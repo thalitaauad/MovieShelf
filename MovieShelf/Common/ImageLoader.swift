@@ -13,7 +13,10 @@ final class ImageLoader: ImageLoading {
     private init() {}
 
     func load(url: URL, completion: @escaping (UIImage?) -> Void) {
-        if let img = cache.object(forKey: url as NSURL) { completion(img); return }
+        if let img = cache.object(forKey: url as NSURL) {
+            completion(img)
+            return
+        }
         DispatchQueue.global(qos: .userInitiated).async {
             URLSession.shared.dataTask(with: url) { data, _, _ in
                 let img = data.flatMap(UIImage.init)

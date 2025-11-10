@@ -13,8 +13,10 @@ public struct Movie: Hashable {
     public let posterPath: String?
     public let voteAverage: Double
     public init(id: Int, originalTitle: String, posterPath: String?, voteAverage: Double) {
-        self.id = id; self.originalTitle = originalTitle
-        self.posterPath = posterPath; self.voteAverage = voteAverage
+        self.id = id
+        self.originalTitle = originalTitle
+        self.posterPath = posterPath
+        self.voteAverage = voteAverage
     }
 }
 
@@ -32,9 +34,15 @@ public struct MovieDetails: Hashable {
     public init(id: Int, originalTitle: String, title: String,
                 posterPath: String?, backdropPath: String?, overview: String?,
                 releaseDate: String?, budget: Int?, revenue: Int?, voteAverage: Double) {
-        self.id = id; self.originalTitle = originalTitle; self.title = title
-        self.posterPath = posterPath; self.backdropPath = backdropPath
-        self.overview = overview; self.releaseDate = releaseDate
-        self.budget = budget; self.revenue = revenue; self.voteAverage = voteAverage
+        self.id = id
+        self.originalTitle = originalTitle
+        self.title = title
+        self.posterPath = posterPath
+        self.backdropPath = backdropPath
+        self.overview = overview
+        self.releaseDate = releaseDate
+        self.budget = budget
+        self.revenue = revenue
+        self.voteAverage = voteAverage
     }
 }
