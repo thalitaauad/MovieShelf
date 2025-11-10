@@ -7,30 +7,11 @@
 
 import Foundation
 
-private struct SearchResponseDTO: Decodable { let results: [MovieDTO] }
-private struct MovieDTO: Decodable {
-    let id: Int
-    let original_title: String
-    let poster_path: String?
-    let vote_average: Double
-}
-private struct MovieDetailsDTO: Decodable {
-    let id: Int
-    let original_title: String
-    let title: String
-    let poster_path: String?
-    let backdrop_path: String?
-    let overview: String?
-    let release_date: String?
-    let budget: Int?
-    let revenue: Int?
-    let vote_average: Double
-}
-
 final class TMDbAPIClient: MoviesAPI {
     private let http: HTTPClient
     private let apiKey: String
     private let base: URL
+    private let decoder = JSONDecoder()
 
     init(http: HTTPClient, apiKey: String) {
         self.http = http
@@ -44,28 +25,32 @@ final class TMDbAPIClient: MoviesAPI {
     private func makeURL(_ path: String, query: [URLQueryItem] = []) -> URL? {
         var comps = URLComponents(url: base.appendingPathComponent(path), resolvingAgainstBaseURL: false)
         var items = query
-        items.append(URLQueryItem(name: "api_key", value: apiKey))
+        items.append(.init(name: "api_key", value: apiKey))
         comps?.queryItems = items
         return comps?.url
     }
 
     func search(query: String, page: Int, completion: @escaping (Result<[Movie], Error>) -> Void) {
         guard let url = makeURL("search/movie",
-                                        query: [URLQueryItem(name: "query", value: query),
-                                                URLQueryItem(name: "page", value: String(page))]) else {
+                                query: [.init(name: "query", value: query),
+                                        .init(name: "page",  value: String(page))]) else {
             completion(.failure(URLError(.badURL)))
             return
         }
+
         http.get(url: url) { result in
             switch result {
-            case .failure(let erro): completion(.failure(erro))
+            case .failure(let erro):
+                completion(.failure(erro))
             case .success(let data):
                 DispatchQueue.global(qos: .userInitiated).async {
                     let mapped: Result<[Movie], Error> = Result {
-                        let dto = try JSONDecoder().decode(SearchResponseDTO.self, from: data)
+                        let dto = try self.decoder.decode(SearchResponseDTO.self, from: data)
                         return dto.results.map {
-                            Movie(id: $0.id, originalTitle: $0.original_title,
-                                  posterPath: $0.poster_path, voteAverage: $0.vote_average)
+                            Movie(id: $0.id,
+                                  originalTitle: $0.originalTitle,
+                                  posterPath: $0.posterPath,
+                                  voteAverage: $0.voteAverage)
                         }
                     }
                     DispatchQueue.main.async { completion(mapped) }
@@ -79,18 +64,27 @@ final class TMDbAPIClient: MoviesAPI {
             completion(.failure(URLError(.badURL)))
             return
         }
+
         http.get(url: url) { result in
             switch result {
-            case .failure(let erro): completion(.failure(erro))
+            case .failure(let e):
+                completion(.failure(e))
             case .success(let data):
                 DispatchQueue.global(qos: .userInitiated).async {
                     let mapped: Result<MovieDetails, Error> = Result {
-                        let details = try JSONDecoder().decode(MovieDetailsDTO.self, from: data)
+                        let detail = try self.decoder.decode(MovieDetailsDTO.self, from: data)
                         return MovieDetails(
-                            id: details.id,
-                            originalTitle: details.original_title,
-                            title: details.title,
-                            posterPath: details.poster_path, backdropPath: details.backdrop_path, overview: details.overview, releaseDate: details.release_date, budget: details.budget, revenue: details.revenue, voteAverage: details.vote_average)
+                            id: detail.id,
+                            originalTitle: detail.originalTitle,
+                            title: detail.title,
+                            posterPath: detail.posterPath,
+                            backdropPath: detail.backdropPath,
+                            overview: detail.overview,
+                            releaseDate: detail.releaseDate,
+                            budget: detail.budget,
+                            revenue: detail.revenue,
+                            voteAverage: detail.voteAverage
+                        )
                     }
                     DispatchQueue.main.async { completion(mapped) }
                 }

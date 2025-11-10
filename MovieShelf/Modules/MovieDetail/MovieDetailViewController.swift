@@ -39,6 +39,11 @@ final class MovieDetailViewController: UIViewController, MovieDetailViewInput {
         setupUI()
         presenter?.viewDidLoad()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        presenter?.viewDidLoad()
+    }
 
     private func setupUI() {
         backdrop.contentMode = .scaleAspectFill
